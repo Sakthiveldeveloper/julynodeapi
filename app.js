@@ -44,7 +44,7 @@ app.get('/restaurants',(req,res) =>{
 app.get('/restaurant',(req,res) =>{
     var query = {}
     if(req.query.stateId){
-        query={state_id:Number(req.query.statexId)}
+        query={state_id:Number(req.query.stateId)}
     }else if(req.query.mealtype_id){
         query={"mealType.mealtype_id":req.query.mealtype}
     }
