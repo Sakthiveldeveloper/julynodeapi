@@ -82,6 +82,42 @@ app.get('/filter/:mealType',(req,res) => {
         limit = Number(req.query.limit)
     }
     var mealType = req.params.mealType;
+    var query = {"mealTypes.mealtype_id":Number(mealType)};
+    if(req.query.cuisine && req.query.lcost && req.query.hcost){
+        query={
+            $and:[{cost:{$gt:Number(req.query.lcost),$lt:Number(req.query.hcost)}}],
+            "cuisines.cuisine_id":Number(req.query.cuisine),
+            "mealTypes.mealtype_id":Number(mealType)
+        }
+    }
+    else if(req.query.cuisine){
+        query = {"mealTypes.mealtype_id":Number(mealType),"cuisines.cuisine_id":Number(req.query.cuisine) }
+    }
+    else if(req.query.lcost && req.query.hcost){
+        var lcost = Number(req.query.lcost);
+        var hcost = Number(req.query.hcost);
+        query={$and:[{cost:{$gt:lcost,$lt:hcost}}],"mealTypes.mealtype_id":Number(mealType)}
+    }
+    db.collection(col_name1).find(query).sort(sort).skip(skip).limit(limit).toArray((err,result)=>{
+        if(err) throw err;
+        res.send(result)
+    })
+})
+/*
+//filterapi
+//(http://localhost:8210/filter/1?lcost=500&hcost=600)
+app.get('/filter/:mealType',(req,res) => {
+    var sort = {cost:1}
+    var skip = 0;
+    var limit= 1000000000000;
+    if(req.query.sortkey){
+        sort = {cost:req.query.sortkey}
+    }
+    if(req.query.skip && req.query.limit){
+        skip = Number(req.query.skip);
+        limit = Number(req.query.limit)
+    }
+    var mealType = req.params.mealType;
     var query = {"type.mealtype":mealType};
     if(req.query.cuisine && req.query.lcost && req.query.hcost){
         query={
@@ -103,6 +139,7 @@ app.get('/filter/:mealType',(req,res) => {
         res.send(result)
     })
 })
+*/
 // query example
 /*app.get('/restaurant',(req,res) =>{
     var mealType = req.query.mealType?req.query.mealType:"2";
