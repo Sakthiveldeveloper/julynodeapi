@@ -18,7 +18,7 @@ const mongourl = "mongodb+srv://edureka:1234@cluster0.t9dwc.mongodb.net/zomato?r
 
 var db;
 let col_name ="location"
-let col_name1 ="res"
+let col_name1 ="restaurants"
 //get
 app.get('/',(req,res) => {
     res.send("Welcome to Node Api1")
@@ -31,6 +31,7 @@ app.get('/location',(req,res) =>{
         res.send(result)
     })
 })
+
 //List all restaurants
 app.get('/restaurants',(req,res) =>{
     db.collection(col_name1).find().toArray((err,result)=>{
@@ -38,7 +39,22 @@ app.get('/restaurants',(req,res) =>{
         res.send(result)
     })
 })
+//query example
 // restarants with respect to quick search
+app.get('/restaurant',(req,res) =>{
+    var query = {}
+    if(req.query.stateId){
+        query={state_id:Number(req.query.statexId)}
+    }else if(req.query.mealtype_id){
+        query={"mealType.mealtype_id":req.query.mealtype}
+    }
+    db.collection(col_name1).find(query).toArray((err,result)=>{
+        if(err) throw err;
+        res.send(result)
+    })
+})
+// restarants with respect to quick search
+/*
 app.get('/restaurant',(req,res) =>{
     var query = {}
     if(req.query.cityId){
@@ -51,6 +67,7 @@ app.get('/restaurant',(req,res) =>{
         res.send(result)
     })
 })
+*/
 //filterapi
 //(http://localhost:8210/filter/1?lcost=500&hcost=600)
 app.get('/filter/:mealType',(req,res) => {
@@ -104,7 +121,7 @@ app.get('/quicksearch',(req,res) =>{
 // restaurant Details
 app.get('/details/:id',(req,res)=>{
     var id= req.params.id
-    db.collection('res').find({_id:id},(err, result) => {
+    db.collection('restaurants').find({_id:id},(err, result) => {
         if(err) throw err;
         res.send(result)
     })
