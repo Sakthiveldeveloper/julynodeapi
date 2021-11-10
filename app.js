@@ -46,7 +46,7 @@ app.get('/restaurant',(req,res) =>{
     if(req.query.stateId){
         query={state_id:Number(req.query.stateId)}
     }else if(req.query.mealtype_id){
-        query={"mealType.mealtype_id":req.query.mealtype}
+        query={"mealTypes.mealtype_id":Number(req.query.mealtype)}
     }
     db.collection(col_name1).find(query).toArray((err,result)=>{
         if(err) throw err;
