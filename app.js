@@ -3,7 +3,7 @@ const app = express();
 const bodyParser = require('body-parser');
 const dotenv = require('dotenv');
 dotenv.config()
-const port =process.env.PORT||6700;
+const port =process.env.PORT||7700;
 const mongo = require('mongodb');
 const MongoClient = mongo.MongoClient;
 const cors = require('cors');
@@ -53,6 +53,7 @@ app.get('/restaurant',(req,res) =>{
         res.send(result)
     })
 })
+//https://zomatojulapi.herokuapp.com/restaurant?mealtype_id=1
 // restarants with respect to quick search
 /*
 app.get('/restaurant',(req,res) =>{
