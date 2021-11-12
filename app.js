@@ -188,6 +188,19 @@ app.get('/menu/:id',(req,res)=>{
     })
 })
 
+
+//geting multiple data in a single 
+//use postman
+//working
+
+app.post('/menuItem',(req, res) => {
+    console.log(req.body)
+    db.collection('menu').find({menu_id:{$in:req.body.ids}}).toArray((err, result) => {
+        if(err) throw err;
+        res.send(result)
+    })
+})
+
 // place order
 app.post('/placeOrder',(req, res) => {
     console.log(req.body);
