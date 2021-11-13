@@ -71,6 +71,7 @@ app.get('/restaurant',(req,res) =>{
 */
 //filterapi
 //(http://localhost:8210/filter/1?lcost=500&hcost=600)
+
 app.get('/filter/:mealType',(req,res) => {
     var sort = {cost:1}
     var skip = 0;
@@ -82,7 +83,7 @@ app.get('/filter/:mealType',(req,res) => {
         skip = Number(req.query.skip);
         limit = Number(req.query.limit)
     }
-    var mealType = req.params.mealType;
+    var mealType = Number(req.params.mealType);
     var query = {"mealTypes.mealtype_id":Number(mealType)};
     if(req.query.cuisine && req.query.lcost && req.query.hcost){
         query={
